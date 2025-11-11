@@ -31,24 +31,44 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
     studentInfo = {
-        serverAddress: document.getElementById('serverAddress').value,
-        serverPort: document.getElementById('serverPort').value,
-        studentId: document.getElementById('studentId').value,
-        studentName: document.getElementById('studentName').value
+        studentName: document.getElementById('studentName').value,
+        studentId: 'STU-' + Date.now() // Auto-generate ID
     };
     
-    // Simulate connection (in real implementation, connect to Java server)
-    showMessage('loginMessage', 'Connecting to server...', 'success');
+    // Load questions and start quiz
+    showMessage('loginMessage', 'Loading quiz...', 'success');
     
     setTimeout(() => {
-        // Load sample questions for demo
         loadSampleQuestions();
         startQuiz();
-    }, 1000);
+    }, 500);
 });
 
 // Load Sample Questions (Demo)
 function loadSampleQuestions() {
+    // Try to load questions from admin portal's storage
+    try {
+        const stored = localStorage.getItem('quizmaster_questions');
+        if (stored) {
+            const adminQuestions = JSON.parse(stored);
+            if (adminQuestions && adminQuestions.length > 0) {
+                // Convert admin format to student format
+                questions = adminQuestions.map(q => ({
+                    questionId: q.id,
+                    questionText: q.text,
+                    options: q.options,
+                    correctAnswerIndex: q.correctAnswer,
+                    category: 'Quiz',
+                    points: q.points
+                }));
+                return;
+            }
+        }
+    } catch (error) {
+        console.log('No questions in storage, using defaults');
+    }
+    
+    // Default questions if none in storage
     questions = [
         {
             questionId: 1,
@@ -140,132 +160,121 @@ function loadSampleQuestions() {
 function startQuiz() {
     showScreen('quizScreen');
     startTime = Date.now();
-    currentQuestion = 0;
-    answers = [];
+    answers = new Array(questions.length).fill(null);
     score = 0;
     
     document.getElementById('studentInfo').textContent = 
         `Welcome, ${studentInfo.studentName} (${studentInfo.studentId})`;
     
-    loadQuestion();
+    // Update header stats
+    document.getElementById('totalQuestions').textContent = questions.length;
+    document.getElementById('answeredCount').textContent = '0';
+    
+    loadAllQuestions();
 }
 
-// Load Question
-function loadQuestion() {
-    const question = questions[currentQuestion];
-    selectedAnswer = null;
+// Load All Questions
+function loadAllQuestions() {
+    const container = document.getElementById('allQuestionsContainer');
+    container.innerHTML = '';
     
-    // Update header
-    document.getElementById('questionCounter').textContent = 
-        `Question ${currentQuestion + 1} of ${questions.length}`;
-    document.getElementById('currentScore').textContent = 
-        `Score: ${score}/${questions.length * 10}`;
-    
-    // Update question
-    document.getElementById('questionCategory').textContent = question.category;
-    document.getElementById('questionPoints').textContent = `${question.points} points`;
-    document.getElementById('questionText').textContent = question.questionText;
-    
-    // Load options
-    const optionsContainer = document.getElementById('optionsContainer');
-    optionsContainer.innerHTML = '';
-    
-    question.options.forEach((option, index) => {
-        const optionDiv = document.createElement('div');
-        optionDiv.className = 'option';
-        optionDiv.innerHTML = `
-            <span class="option-number">${index + 1}</span>
-            <span class="option-text">${option}</span>
+    questions.forEach((question, qIndex) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'single-question';
+        questionDiv.id = `question-${qIndex}`;
+        
+        let optionsHTML = '';
+        question.options.forEach((option, oIndex) => {
+            optionsHTML += `
+                <div class="option" data-question="${qIndex}" data-option="${oIndex}">
+                    <span class="option-number">${oIndex + 1}</span>
+                    <span class="option-text">${option}</span>
+                </div>
+            `;
+        });
+        
+        questionDiv.innerHTML = `
+            <div class="question-number">Question ${qIndex + 1}</div>
+            <div class="question-text">${question.questionText}</div>
+            <div class="options">
+                ${optionsHTML}
+            </div>
         `;
-        optionDiv.addEventListener('click', () => selectOption(index));
-        optionsContainer.appendChild(optionDiv);
+        
+        container.appendChild(questionDiv);
     });
     
-    // Update buttons
-    document.getElementById('prevButton').disabled = currentQuestion === 0;
-    document.getElementById('nextButton').disabled = true;
-    document.getElementById('submitButton').disabled = false;
-    
-    // Clear message
-    document.getElementById('quizMessage').style.display = 'none';
+    // Add click handlers to all options
+    document.querySelectorAll('.option').forEach(option => {
+        option.addEventListener('click', function() {
+            const qIndex = parseInt(this.dataset.question);
+            const oIndex = parseInt(this.dataset.option);
+            selectOption(qIndex, oIndex);
+        });
+    });
 }
 
 // Select Option
-function selectOption(index) {
-    selectedAnswer = index;
+function selectOption(questionIndex, optionIndex) {
+    // Store the answer
+    answers[questionIndex] = optionIndex;
     
-    // Update UI
-    document.querySelectorAll('.option').forEach((opt, i) => {
-        if (i === index) {
+    // Update UI for this question
+    const questionDiv = document.getElementById(`question-${questionIndex}`);
+    questionDiv.querySelectorAll('.option').forEach((opt, i) => {
+        if (i === optionIndex) {
             opt.classList.add('selected');
         } else {
             opt.classList.remove('selected');
         }
     });
+    
+    // Update answered count
+    const answeredCount = answers.filter(a => a !== null).length;
+    document.getElementById('answeredCount').textContent = answeredCount;
+    
+    // Show submit button if all questions are answered
+    if (answeredCount === questions.length) {
+        document.getElementById('submitSection').style.display = 'block';
+        // Scroll to submit button
+        document.getElementById('submitSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 }
 
-// Submit Answer
-document.getElementById('submitButton').addEventListener('click', () => {
-    if (selectedAnswer === null) {
-        showMessage('quizMessage', 'Please select an answer!', 'error');
+// Submit All Answers
+document.getElementById('submitAllButton').addEventListener('click', () => {
+    // Check if all questions are answered
+    if (answers.some(a => a === null)) {
+        showMessage('quizMessage', 'Please answer all questions before submitting!', 'error');
         return;
     }
     
-    const question = questions[currentQuestion];
-    const isCorrect = selectedAnswer === question.correctAnswerIndex;
-    
-    // Store answer
-    answers.push({
-        questionId: question.questionId,
-        selectedAnswer: selectedAnswer,
-        isCorrect: isCorrect
+    // Calculate results
+    score = 0;
+    questions.forEach((question, index) => {
+        const isCorrect = answers[index] === question.correctAnswerIndex;
+        if (isCorrect) {
+            score += question.points;
+        }
     });
     
-    // Update score
-    if (isCorrect) {
-        score += question.points;
-        showMessage('quizMessage', `✓ Correct! +${question.points} points`, 'success');
-    } else {
-        showMessage('quizMessage', `✗ Incorrect. The correct answer is: ${question.options[question.correctAnswerIndex]}`, 'error');
-    }
-    
-    // Update buttons
-    document.getElementById('submitButton').disabled = true;
-    
-    if (currentQuestion < questions.length - 1) {
-        document.getElementById('nextButton').disabled = false;
-    } else {
-        // Last question - show finish button
-        document.getElementById('nextButton').textContent = 'Finish Quiz';
-        document.getElementById('nextButton').disabled = false;
-    }
-});
-
-// Next Button
-document.getElementById('nextButton').addEventListener('click', () => {
-    if (currentQuestion < questions.length - 1) {
-        currentQuestion++;
-        loadQuestion();
-    } else {
-        // Finish quiz
-        showResults();
-    }
-});
-
-// Previous Button
-document.getElementById('prevButton').addEventListener('click', () => {
-    if (currentQuestion > 0) {
-        currentQuestion--;
-        loadQuestion();
-    }
+    showResults();
 });
 
 // Show Results
 function showResults() {
     const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-    const correctAnswers = answers.filter(a => a.isCorrect).length;
+    
+    // Count correct answers
+    let correctAnswers = 0;
+    questions.forEach((question, index) => {
+        if (answers[index] === question.correctAnswerIndex) {
+            correctAnswers++;
+        }
+    });
+    
     const totalQuestions = questions.length;
-    const maxScore = totalQuestions * 10;
+    const maxScore = questions.reduce((sum, q) => sum + q.points, 0);
     const percentage = (score / maxScore * 100).toFixed(2);
     
     // Calculate grade
@@ -278,8 +287,7 @@ function showResults() {
     else grade = "F (Fail)";
     
     // Display results
-    document.getElementById('resultStudent').textContent = 
-        `${studentInfo.studentName} (${studentInfo.studentId})`;
+    document.getElementById('resultStudent').textContent = studentInfo.studentName;
     document.getElementById('resultScore').textContent = `${score} / ${maxScore}`;
     document.getElementById('resultCorrect').textContent = `${correctAnswers} / ${totalQuestions}`;
     document.getElementById('resultPercentage').textContent = `${percentage}%`;
@@ -289,7 +297,7 @@ function showResults() {
     showScreen('resultsScreen');
 }
 
-// Retake Quiz
+// Try Again
 document.getElementById('retakeButton').addEventListener('click', () => {
     showScreen('loginScreen');
     document.getElementById('loginForm').reset();

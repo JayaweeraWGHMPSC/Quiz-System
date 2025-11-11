@@ -124,15 +124,6 @@ function addActivityLog(message, type = 'info') {
 function updateDashboard() {
     // Update statistics
     document.getElementById('totalStudents').textContent = state.students.length;
-    document.getElementById('activeQuizzes').textContent = state.activeQuizzes;
-    
-    // Calculate average score
-    if (state.results.length > 0) {
-        const avgScore = state.results.reduce((sum, r) => sum + r.percentage, 0) / state.results.length;
-        document.getElementById('avgScore').textContent = avgScore.toFixed(1) + '%';
-    } else {
-        document.getElementById('avgScore').textContent = '0%';
-    }
     
     // Update performance grid
     updatePerformanceGrid();
@@ -728,41 +719,6 @@ function loadSampleData() {
             text: 'What is the purpose of a Socket in network programming?',
             options: ['Store data', 'Establish connection between client and server', 'Compile code', 'Debug errors'],
             correctAnswer: 1,
-            points: 10
-        },
-        {
-            id: 6,
-            text: 'Which Java class is used to create a server socket?',
-            options: ['Socket', 'ServerSocket', 'DatagramSocket', 'NetworkSocket'],
-            correctAnswer: 1,
-            points: 10
-        },
-        {
-            id: 7,
-            text: 'What does TCP stand for?',
-            options: ['Transfer Control Protocol', 'Transmission Control Protocol', 'Transport Connection Protocol', 'Transfer Connection Protocol'],
-            correctAnswer: 1,
-            points: 10
-        },
-        {
-            id: 8,
-            text: 'Which method is used to accept client connections in Java?',
-            options: ['connect()', 'accept()', 'listen()', 'bind()'],
-            correctAnswer: 1,
-            points: 10
-        },
-        {
-            id: 9,
-            text: 'What is multithreading in Java?',
-            options: ['Running multiple programs', 'Executing multiple threads simultaneously', 'Using multiple classes', 'Creating multiple objects'],
-            correctAnswer: 1,
-            points: 10
-        },
-        {
-            id: 10,
-            text: 'Which keyword is used to implement multithreading in Java?',
-            options: ['Thread', 'Runnable', 'Both Thread and Runnable', 'Concurrent'],
-            correctAnswer: 2,
             points: 10
         }
     ];

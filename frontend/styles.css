@@ -101,6 +101,12 @@ h2 {
     width: 100%;
 }
 
+.btn-large {
+    padding: 16px 40px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
 .btn-primary:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
@@ -241,6 +247,61 @@ h2 {
     border-color: #667eea;
     background: #667eea;
     color: white;
+}
+
+/* All Questions Layout */
+#allQuestionsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.single-question {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.single-question .question-number {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.single-question .question-text {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.single-question .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 0;
+}
+
+.submit-section {
+    text-align: center;
+    padding: 30px 0;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.submit-section button {
+    width: auto;
+    min-width: 300px;
 }
 
 .option-number {

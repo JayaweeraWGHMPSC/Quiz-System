@@ -42,10 +42,6 @@
                         <span class="nav-icon">🏆</span>
                         <span class="nav-text">Quiz Results</span>
                     </li>
-                    <li class="nav-item" onclick="showTab('controls')">
-                        <span class="nav-icon">⚙️</span>
-                        <span class="nav-text">Quiz Controls</span>
-                    </li>
                 </ul>
             </nav>
 
@@ -55,8 +51,8 @@
                 <div id="dashboard" class="tab-content active">
                     <h2>Live Dashboard</h2>
                     
-                    <!-- Stats Cards -->
-                    <div class="stats-grid">
+                    <!-- Stats and Quiz Control in Same Row -->
+                    <div class="dashboard-row">
                         <div class="stat-card">
                             <div class="stat-icon">👥</div>
                             <div class="stat-info">
@@ -64,19 +60,12 @@
                                 <p>Connected Students</p>
                             </div>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">✅</div>
-                            <div class="stat-info">
-                                <h3 id="activeQuizzes">0</h3>
-                                <p>Active Quizzes</p>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">📊</div>
-                            <div class="stat-info">
-                                <h3 id="avgScore">0%</h3>
-                                <p>Average Score</p>
-                            </div>
+
+                        <div class="quiz-management-card">
+                            <h3>🎮 Quiz Management</h3>
+                            <button class="btn-success btn-large btn-start-quiz" onclick="startQuizForAll()">
+                                ▶️ Start Quiz for All Students
+                            </button>
                         </div>
                     </div>
 
@@ -174,32 +163,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-                </div>
-
-                <!-- Quiz Controls Tab -->
-                <div id="controls" class="tab-content">
-                    <h2>⚙️ Quiz Controls</h2>
-
-                    <div class="controls-grid">
-                        <div class="control-card">
-                            <h3>🎮 Quiz Management</h3>
-                            <div class="control-actions">
-                                <button class="btn-success btn-large" onclick="startQuizForAll()">
-                                    ▶️ Start Quiz for All Students
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="control-card">
-                            <h3>📊 Server Status</h3>
-                            <div class="status-info">
-                                <p><strong>Server:</strong> <span id="serverPort">localhost:8888</span></p>
-                                <p><strong>Uptime:</strong> <span id="serverUptime">0m</span></p>
-                                <p><strong>Total Connections:</strong> <span id="totalConnections">0</span></p>
-                                <p><strong>Active Threads:</strong> <span id="activeThreads">0</span></p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </main>
