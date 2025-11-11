@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster Connect - Admin Portal</title>
+    <link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-content">
+                <h1>🎓 QuizMaster Connect - Admin Portal</h1>
+                <div class="header-actions">
+                    <span class="server-status" id="serverStatus">
+                        <span class="status-dot"></span>
+                        <span id="statusText">Connecting...</span>
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="admin-main">
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar">
+                <ul class="nav-menu">
+                    <li class="nav-item active" onclick="showTab('dashboard')">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Dashboard</span>
+                    </li>
+                    <li class="nav-item" onclick="showTab('students')">
+                        <span class="nav-icon">👥</span>
+                        <span class="nav-text">Connected Students</span>
+                    </li>
+                    <li class="nav-item" onclick="showTab('questions')">
+                        <span class="nav-icon">📝</span>
+                        <span class="nav-text">Question Bank</span>
+                    </li>
+                    <li class="nav-item" onclick="showTab('results')">
+                        <span class="nav-icon">🏆</span>
+                        <span class="nav-text">Quiz Results</span>
+                    </li>
+                    <li class="nav-item" onclick="showTab('controls')">
+                        <span class="nav-icon">⚙️</span>
+                        <span class="nav-text">Quiz Controls</span>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Content Area -->
+            <main class="content-area">
+                <!-- Dashboard Tab -->
+                <div id="dashboard" class="tab-content active">
+                    <h2>Live Dashboard</h2>
+                    
+                    <!-- Stats Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-info">
+                                <h3 id="totalStudents">0</h3>
+                                <p>Connected Students</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-info">
+                                <h3 id="activeQuizzes">0</h3>
+                                <p>Active Quizzes</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-info">
+                                <h3 id="avgScore">0%</h3>
+                                <p>Average Score</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Activity Feed -->
+                    <div class="dashboard-section">
+                        <h3>📡 Live Activity Feed</h3>
+                        <div class="activity-feed" id="activityFeed">
+                            <div class="activity-item">
+                                <span class="activity-time">Just now</span>
+                                <span class="activity-text">System initialized</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Real-time Student Performance -->
+                    <div class="dashboard-section">
+                        <h3>📈 Real-time Performance</h3>
+                        <div class="performance-grid" id="performanceGrid">
+                            <!-- Will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Connected Students Tab -->
+                <div id="students" class="tab-content">
+                    <div class="section-header">
+                        <h2>👥 Connected Students</h2>
+                        <button class="btn-primary" onclick="refreshStudents()">🔄 Refresh</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Connected At</th>
+                                    <th>Current Score</th>
+                                    <th>Progress</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsTableBody">
+                                <tr>
+                                    <td colspan="7" class="empty-state">No students connected</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Question Bank Tab -->
+                <div id="questions" class="tab-content">
+                    <div class="section-header">
+                        <h2>📝 Question Bank</h2>
+                        <button class="btn-primary" onclick="showAddQuestionModal()">➕ Add Question</button>
+                    </div>
+
+                    <div class="questions-info" style="background: #e0e7ff; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <p style="margin: 0; color: #4338ca; font-size: 0.9rem;">
+                            ℹ️ <strong>Auto-Save Enabled:</strong> All changes (add, edit, delete) are automatically saved to your browser's local storage.
+                        </p>
+                    </div>
+
+                    <div class="questions-grid" id="questionsGrid">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Quiz Results Tab -->
+                <div id="results" class="tab-content">
+                    <div class="section-header">
+                        <h2>🏆 Quiz Results</h2>
+                        <button class="btn-primary" onclick="refreshResults()">🔄 Refresh</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Name</th>
+                                    <th>Score</th>
+                                    <th>Percentage</th>
+                                    <th>Correct Answers</th>
+                                    <th>Time Taken</th>
+                                    <th>Completed At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTableBody">
+                                <tr>
+                                    <td colspan="8" class="empty-state">No results available</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Quiz Controls Tab -->
+                <div id="controls" class="tab-content">
+                    <h2>⚙️ Quiz Controls</h2>
+
+                    <div class="controls-grid">
+                        <div class="control-card">
+                            <h3>🎮 Quiz Management</h3>
+                            <div class="control-actions">
+                                <button class="btn-success btn-large" onclick="startQuizForAll()">
+                                    ▶️ Start Quiz for All Students
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="control-card">
+                            <h3>📊 Server Status</h3>
+                            <div class="status-info">
+                                <p><strong>Server:</strong> <span id="serverPort">localhost:8888</span></p>
+                                <p><strong>Uptime:</strong> <span id="serverUptime">0m</span></p>
+                                <p><strong>Total Connections:</strong> <span id="totalConnections">0</span></p>
+                                <p><strong>Active Threads:</strong> <span id="activeThreads">0</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Add Question Modal -->
+    <div id="addQuestionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>➕ Add New Question</h2>
+                <span class="close" onclick="closeAddQuestionModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="addQuestionForm" onsubmit="addQuestion(event)">
+                    <div class="form-group">
+                        <label>Question Text:</label>
+                        <textarea id="questionText" required rows="3" placeholder="Enter your question here..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Option 1:</label>
+                        <input type="text" id="option1" required placeholder="Enter first option">
+                    </div>
+                    <div class="form-group">
+                        <label>Option 2:</label>
+                        <input type="text" id="option2" required placeholder="Enter second option">
+                    </div>
+                    <div class="form-group">
+                        <label>Option 3:</label>
+                        <input type="text" id="option3" required placeholder="Enter third option">
+                    </div>
+                    <div class="form-group">
+                        <label>Option 4:</label>
+                        <input type="text" id="option4" required placeholder="Enter fourth option">
+                    </div>
+                    <div class="form-group">
+                        <label>Correct Answer (0-3):</label>
+                        <input type="number" id="correctAnswer" min="0" max="3" required placeholder="0, 1, 2, or 3">
+                    </div>
+                    <div class="form-group">
+                        <label>Points:</label>
+                        <input type="number" id="points" value="10" min="1" required placeholder="Points for this question">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeAddQuestionModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Add Question</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-app.js"></script>
+</body>
+</html>

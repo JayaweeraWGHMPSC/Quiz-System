@@ -1,0 +1,13 @@
+# Quiz Questions
+# Format: questionId|questionText|option1,option2,option3,option4|correctIndex|category|points
+#
+1|What is the default port for HTTP?|80,443,8080,3306|0|Networking|10
+2|Which Java class is used for server-side socket programming?|Socket,ServerSocket,DatagramSocket,MulticastSocket|1|Java|10
+3|What does TCP stand for?|Transfer Control Protocol,Transmission Control Protocol,Transport Communication Protocol,Technical Control Protocol|1|Networking|10
+4|Which layer of OSI model handles routing?|Physical,Data Link,Network,Transport|2|Networking|10
+5|What is the purpose of ObjectInputStream in Java?|Read text data,Serialize objects,Deserialize objects,Write binary data|2|Java|10
+6|Which method is used to accept client connections?|connect(),accept(),listen(),bind()|1|Java|10
+7|What is multithreading?|Running multiple programs,Running multiple threads simultaneously,Running multiple servers,Running multiple clients|1|Java|10
+8|What is the range of port numbers?|0-1023,1024-49151,0-65535,1-1000|2|Networking|10
+9|Which keyword is used for thread synchronization?|async,synchronized,lock,atomic|1|Java|10
+10|What is a socket?|Hardware component,Endpoint for network communication,Database connection,Memory location|1|Networking|10

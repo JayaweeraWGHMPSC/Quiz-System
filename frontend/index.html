@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster Connect - Student Portal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Login Screen -->
+        <div id="loginScreen" class="screen active">
+            <div class="card">
+                <h1>QuizMaster Connect</h1>
+                <h2>Student Portal</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="serverAddress">Server Address:</label>
+                        <input type="text" id="serverAddress" value="localhost" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="serverPort">Server Port:</label>
+                        <input type="number" id="serverPort" value="8888" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentId">Student ID:</label>
+                        <input type="text" id="studentId" placeholder="Enter your ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentName">Student Name:</label>
+                        <input type="text" id="studentName" placeholder="Enter your name" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Connect to Quiz</button>
+                </form>
+                <div id="loginMessage" class="message"></div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quizScreen" class="screen">
+            <div class="quiz-header">
+                <div class="quiz-info">
+                    <h2>QuizMaster Connect</h2>
+                    <p id="studentInfo"></p>
+                </div>
+                <div class="quiz-stats">
+                    <span id="questionCounter">Question 1 of 10</span>
+                    <span id="currentScore">Score: 0/100</span>
+                </div>
+            </div>
+
+            <div class="quiz-content">
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-category" id="questionCategory">Category</span>
+                        <span class="question-points" id="questionPoints">10 points</span>
+                    </div>
+                    <div class="question-text" id="questionText">
+                        Loading question...
+                    </div>
+                    <div class="options" id="optionsContainer">
+                        <!-- Options will be dynamically inserted here -->
+                    </div>
+                    <div class="question-footer">
+                        <button id="prevButton" class="btn btn-secondary" disabled>Previous</button>
+                        <button id="submitButton" class="btn btn-primary">Submit Answer</button>
+                        <button id="nextButton" class="btn btn-secondary" disabled>Next</button>
+                    </div>
+                </div>
+                <div id="quizMessage" class="message"></div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="screen">
+            <div class="card results-card">
+                <h1>Quiz Completed!</h1>
+                <div class="results-content">
+                    <div class="result-item">
+                        <span class="result-label">Student:</span>
+                        <span class="result-value" id="resultStudent"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Score:</span>
+                        <span class="result-value" id="resultScore"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Correct Answers:</span>
+                        <span class="result-value" id="resultCorrect"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Percentage:</span>
+                        <span class="result-value" id="resultPercentage"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Grade:</span>
+                        <span class="result-value grade" id="resultGrade"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Time Taken:</span>
+                        <span class="result-value" id="resultTime"></span>
+                    </div>
+                </div>
+                <button id="retakeButton" class="btn btn-primary">Retake Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
