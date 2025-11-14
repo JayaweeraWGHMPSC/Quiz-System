@@ -2,19 +2,6 @@
 
 A comprehensive **Java Network Programming** project that implements a multi-user quiz system allowing multiple students (clients) to connect to a central quiz server, attempt quizzes in real-time, and receive evaluated results. Administrators can manage questions and view results through a dedicated admin panel.
 
-## 📋 Table of Contents
-
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [Architecture](#architecture)
-- [Network Programming Concepts](#network-programming-concepts)
-- [Team Member Contributions](#team-member-contributions)
-- [Prerequisites](#prerequisites)
-- [Installation & Setup](#installation--setup)
-- [Usage Guide](#usage-guide)
-- [Project Structure](#project-structure)
-- [Technologies Used](#technologies-used)
-
 ## 🎯 Project Overview
 
 **QuizMaster Connect** is a client-server application built with pure Java (no external frameworks) that demonstrates advanced network programming concepts including socket communication, multithreading, object serialization, and concurrent data handling.
@@ -54,23 +41,6 @@ A comprehensive **Java Network Programming** project that implements a multi-use
 - 🔄 Handle concurrent requests with multithreading
 - ✔️ Real-time answer evaluation
 - 💾 Persistent data storage
-
-## 👥 Team Member Contributions
-
-### Member 1: Socket-based Client-Server Communication
-**Files**: `QuizServer.java` - Implemented ServerSocket and client connection handling
-
-### Member 2: Multithreading for Multiple Students
-**Files**: `ClientHandler.java` - Thread-based client handler for concurrent processing
-
-### Member 3: Admin Panel for Managing Questions
-**Files**: `AdminPanel.java` - Swing GUI for question and result management
-
-### Member 4: Result Evaluation and Real-time Score Update
-**Files**: `QuizEvaluator.java` - Real-time answer evaluation and score tracking
-
-### Member 5: Data Persistence
-**Files**: `DataPersistence.java` - File-based storage for questions and results
 
 ## 🚀 Installation & Setup
 
@@ -189,11 +159,3 @@ Quiz-System/
 3. **ObjectInputStream/ObjectOutputStream** - Object serialization
 4. **Synchronized methods** - Thread safety
 5. **ConcurrentHashMap** - Thread-safe collections
-
-## 📞 Support
-
-For questions, check the code comments or troubleshooting section in the full documentation.
-
----
-
-**QuizMaster Connect** - Learn Network Programming Through Practice! 🚀
